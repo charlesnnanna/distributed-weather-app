@@ -1,10 +1,12 @@
 {
   "name": "email_sender",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index,js"
   },
   "keywords": [],
   "author": "Charles Uthulor",
@@ -12,5 +14,8 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }

@@ -1,14 +1,10 @@
-const express = require('express');
-const amqp = require('amqplib');
+import express from 'express';
+import amqp from 'amqplib';
+import cron from 'node-cron';
+import { customers } from '../data.mjs';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-const customers = [
-  { email: 'customer1@example.com', name: 'Customer 1' },
-  { email: 'customer2@example.com', name: 'Customer 2' },
-  // Add more customers as needed
-];
 
 const queueName = 'weather_queue';
 
@@ -18,8 +14,11 @@ async function startMainApp() {
   await channel.assertQueue(queueName, { durable: false });
 
   // Send each user to the weather checking service
-  customers.forEach(async (user) => {
-    await channel.sendToQueue(queueName, Buffer.from(JSON.stringify(user)));
+  cron.schedule('*/2 * * * *', async () => {
+    customers.forEach((user) => {
+      channel.sendToQueue(queueName, Buffer.from(JSON.stringify(user)));
+      console.log(`${user.name} has been sent to the weather_checker`);
+    });
   });
 }
 

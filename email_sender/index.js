@@ -1,15 +1,23 @@
-const nodemailer = require('nodemailer');
-const amqp = require('amqplib');
+import amqp from 'amqplib';
+import { customers } from '../data.mjs';
+import { getEmailState, getTimeState } from './helper.js';
 
 const queueName = 'email_queue';
 
-async function sendEmailForUser(user, isRaining) {
+async function sendEmailToUser(user, isRaining) {
   // Simulate email sending logic
-  console.log(
-    `Sending email to ${user.name} (${user.email}) - It's ${
-      isRaining ? 'raining' : 'not raining'
-    }`,
-  );
+  const timeState = getTimeState(user);
+  const emailStete = getEmailState(timeState.user, customers);
+  if (timeState.timeExceeded && isRaining && emailStete.hasNotExceeded) {
+    customers[user.index].prevTimestamp = new Date();
+    customers[user.index].numberOfReceivedEmails++;
+    console.log(
+      `Sending email to ${user.name} (${user.email}) - It's raining`,
+      user,
+    );
+  } else {
+    console.log('Cannot send email at this time', user);
+  }
 }
 
 async function startEmailService() {
@@ -23,7 +31,7 @@ async function startEmailService() {
     queueName,
     async (msg) => {
       const { user, isRaining } = JSON.parse(msg.content.toString());
-      await sendEmailForUser(user, isRaining);
+      await sendEmailToUser(user, isRaining);
 
       channel.ack(msg);
     },

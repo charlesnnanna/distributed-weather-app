@@ -1,16 +1,29 @@
-const axios = require('axios');
-const amqp = require('amqplib');
+// const axios = require('axios');
+import amqp from 'amqplib';
+import { weatherData, weatherCache } from '../data.mjs';
 
-const weatherApiEndpoint = 'YOUR_WEATHER_API_ENDPOINT';
 const queueName = 'weather_queue';
 
 async function checkWeatherForUser(user) {
-  try {
-    const response = await axios.get(weatherApiEndpoint);
-    const weatherData = response.data;
+  const currentTime = Date.now();
 
+  // Check if the data is in the cache and not expired
+  if (
+    weatherCache.data &&
+    currentTime - weatherCache.timestamp < weatherCache.expiration
+  ) {
+    console.log('Using cached weather data.');
+    return weatherCache.data;
+  }
+
+  try {
     // Simulate weather checking logic
-    const isRaining = weatherData.weather.includes('rain');
+    const isRaining = weatherData.current.condition ? true : false;
+    console.log(isRaining);
+
+    // Update the Cache
+    weatherCache.data = { user, isRaining };
+    weatherData.timestamp = currentTime;
     return { user, isRaining };
   } catch (error) {
     console.error('Error checking weather:', error.message);
