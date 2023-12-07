@@ -1,7 +1,7 @@
-import express from 'express';
-import amqp from 'amqplib';
-import cron from 'node-cron';
-import { customers } from '../data.mjs';
+const express = require('express');
+const amqp = require('amqplib');
+const cron = require('node-cron');
+const { customers } = require('../data');
 
 const app = express();
 const PORT = process.env.PORT || 3000;

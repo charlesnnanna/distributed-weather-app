@@ -1,5 +1,5 @@
 // check if its a new day
-export function checkNewDay(user) {
+function checkNewDay(user) {
   if (user.prevTimestamp) {
     const currentDate = new Date();
 
@@ -16,7 +16,7 @@ export function checkNewDay(user) {
 }
 
 // check if user has received more than 3 emails
-export function hasExceededEmails(user) {
+function hasExceededEmails(user) {
   if (user.numberOfReceivedEmails >= 3) {
     return true;
   }
@@ -25,11 +25,11 @@ export function hasExceededEmails(user) {
 }
 
 // get user's state as concerning the number of emails received in a day
-export function getEmailState(user, customers) {
+function getEmailState(user, customers) {
   if (checkNewDay(user)) {
-    customers[user.index].numberOfReceivedEmails = 0;
+    user.numberOfReceivedEmails = 0;
     return {
-      user: customers[user.index],
+      user: user,
       hasNotExceeded: true,
     };
   } else {
@@ -49,7 +49,7 @@ export function getEmailState(user, customers) {
 }
 
 // get users' time state as concerning the amount of time passed since the last email
-export function getTimeState(user) {
+function getTimeState(user) {
   const currentTime = new Date();
   if (user.prevTimestamp) {
     const diffInMillisec = Math.abs(currentTime - user.prevTimestamp);
@@ -59,5 +59,13 @@ export function getTimeState(user) {
       return { timeExceeded: false, user };
     }
   }
+  // user.prevTimestamp = currentTime;
   return { timeExceeded: true, user };
 }
+
+module.exports = {
+  getEmailState,
+  getTimeState,
+  checkNewDay,
+  hasExceededEmails,
+};

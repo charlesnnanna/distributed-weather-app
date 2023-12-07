@@ -1,4 +1,4 @@
-export const customers = [
+const customers = [
   {
     index: 0,
     email: 'customer1@example.com',
@@ -29,14 +29,20 @@ export const customers = [
   },
 ];
 
-export const weatherData = {
+const weatherData = {
   current: {
     condition: 'rain',
   },
 };
 
-export const weatherCache = {
+const weatherCache = {
   data: null,
   timestamp: 0,
   expiration: 10 * 60 * 1000, // Cache expires after 10 minutes
+};
+
+module.exports = {
+  customers,
+  weatherCache,
+  weatherData,
 };

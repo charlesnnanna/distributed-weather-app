@@ -1,24 +1,7 @@
-import amqp from 'amqplib';
-import { customers } from '../data.mjs';
-import { getEmailState, getTimeState } from './helper.js';
-
+const amqp = require('amqplib');
 const queueName = 'email_queue';
-
-async function sendEmailToUser(user, isRaining) {
-  // Simulate email sending logic
-  const timeState = getTimeState(user);
-  const emailStete = getEmailState(timeState.user, customers);
-  if (timeState.timeExceeded && isRaining && emailStete.hasNotExceeded) {
-    customers[user.index].prevTimestamp = new Date();
-    customers[user.index].numberOfReceivedEmails++;
-    console.log(
-      `Sending email to ${user.name} (${user.email}) - It's raining`,
-      user,
-    );
-  } else {
-    console.log('Cannot send email at this time', user);
-  }
-}
+const { customers } = require('../data.js');
+const { sendEmailToUser } = require('./email_sender.js');
 
 async function startEmailService() {
   const connection = await amqp.connect('amqp://localhost');
@@ -31,7 +14,7 @@ async function startEmailService() {
     queueName,
     async (msg) => {
       const { user, isRaining } = JSON.parse(msg.content.toString());
-      await sendEmailToUser(user, isRaining);
+      await sendEmailToUser(user, isRaining, customers);
 
       channel.ack(msg);
     },

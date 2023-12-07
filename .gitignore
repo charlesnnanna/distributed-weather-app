@@ -4,7 +4,9 @@ node_modules
 .pnp.js
 
 # testing
-/coverage
+/weather_checker/coverage
+/email_sender/coverage
+
 
 # production
 build
