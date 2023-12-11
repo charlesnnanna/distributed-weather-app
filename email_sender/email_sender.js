@@ -1,10 +1,10 @@
 const { getTimeState, getEmailState } = require('./helper.js');
 
-async function sendEmailToUser(user, isRaining, customers) {
+async function sendEmailToUser(user, isRaining) {
   // Simulate email sending logic
   try {
     const timeState = getTimeState(user);
-    const emailState = getEmailState(timeState.user, customers);
+    const emailState = getEmailState(timeState.user);
     if (timeState.timeExceeded && isRaining && emailState.hasNotExceeded) {
       user.numberOfReceivedEmails += 1;
       user.prevTimestamp = new Date();

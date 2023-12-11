@@ -13,8 +13,8 @@ async function startMainApp() {
   const channel = await connection.createChannel();
   await channel.assertQueue(queueName, { durable: false });
 
-  // Send each user to the weather checking service
-  cron.schedule('*/1 * * * *', async () => {
+  // Send each user to the weather checking service every 2 minutes
+  cron.schedule('*/2 * * * *', async () => {
     customers.forEach((user) => {
       channel.sendToQueue(queueName, Buffer.from(JSON.stringify(user)));
       console.log(`${user.name} has been sent to the weather_checker`);

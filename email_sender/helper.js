@@ -2,6 +2,9 @@
 function checkNewDay(user) {
   if (user.prevTimestamp) {
     const currentDate = new Date();
+    const date = new Date(user.prevTimestamp);
+
+    console.log(date);
 
     if (
       currentDate.getDate() !== user.prevTimestamp.getDate() ||
@@ -25,7 +28,7 @@ function hasExceededEmails(user) {
 }
 
 // get user's state as concerning the number of emails received in a day
-function getEmailState(user, customers) {
+function getEmailState(user) {
   if (checkNewDay(user)) {
     user.numberOfReceivedEmails = 0;
     return {

@@ -1,4 +1,4 @@
-const { weatherCache, weatherData } = require('../data');
+const { weatherCache, getWeatherData } = require('../data');
 
 async function checkWeatherForUser(user) {
   const currentTime = Date.now();
@@ -8,17 +8,19 @@ async function checkWeatherForUser(user) {
     weatherCache.data &&
     currentTime - weatherCache.timestamp < weatherCache.expiration
   ) {
+    const isRaining = weatherCache.data.current.weather_condition.rain;
     console.log('Using cached weather data.');
-    return weatherCache.data;
+    return { user, isRaining };
   }
 
   try {
-    // Simulate weather checking logic
-    const isRaining = weatherData.current.condition ? true : false;
-    console.log(isRaining);
+    console.log('Fetching Data from API');
+    // Fetch weather data
+    const data = await getWeatherData();
+    const isRaining = data.current.weather_condition.rain;
 
     // Update the Cache
-    weatherCache.data = { user, isRaining };
+    weatherCache.data = data;
     weatherCache.timestamp = currentTime;
     return { user, isRaining };
   } catch (error) {

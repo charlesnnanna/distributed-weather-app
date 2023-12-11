@@ -1,37 +1,42 @@
 const customers = [
   {
     index: 0,
-    email: 'customer1@example.com',
-    name: 'Customer 1',
+    email: 'charlesuthulor@gmail.com',
+    name: 'Charles Uthulor',
     numberOfReceivedEmails: 0,
     prevTimestamp: 0,
   },
   {
     index: 1,
-    email: 'customer2@example.com',
-    name: 'Customer 2',
+    email: 'praximeto@gmail.com',
+    name: 'Pierre Doc',
     numberOfReceivedEmails: 0,
     prevTimestamp: 0,
   },
   {
     index: 2,
-    email: 'customer3@example.com',
-    name: 'Customer 3',
+    email: 'luciusfoc@outlook.com',
+    name: 'Lucius Fox',
     numberOfReceivedEmails: 0,
     prevTimestamp: 0,
   },
   {
     index: 3,
-    email: 'customer4@example.com',
-    name: 'Customer 4',
+    email: 'littlemike@gmail.com',
+    name: 'Mike Adams',
     numberOfReceivedEmails: 0,
     prevTimestamp: 0,
   },
 ];
 
 const weatherData = {
+  location: 'Antwerp, Belgium',
   current: {
-    condition: 'rain',
+    weather_condition: {
+      rain: true,
+      snow: false,
+      sunny: false,
+    },
   },
 };
 
@@ -41,8 +46,14 @@ const weatherCache = {
   expiration: 10 * 60 * 1000, // Cache expires after 10 minutes
 };
 
+// API that gets the weather data
+async function getWeatherData() {
+  return weatherData;
+}
+
 module.exports = {
   customers,
   weatherCache,
   weatherData,
+  getWeatherData,
 };

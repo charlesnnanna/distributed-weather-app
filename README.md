@@ -63,6 +63,7 @@ cd ../weather-checker
 npm test
 
 # Run unit tests for email sender
+# Press a to run all tests on Windows OS
 cd ../email-sender
 npm test
 ```
