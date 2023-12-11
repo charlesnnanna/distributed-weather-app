@@ -7,9 +7,9 @@ function checkNewDay(user) {
     console.log(date);
 
     if (
-      currentDate.getDate() !== user.prevTimestamp.getDate() ||
-      currentDate.getMonth() !== user.prevTimestamp.getMonth() ||
-      currentDate.getFullYear() !== user.prevTimestamp.getFullYear()
+      currentDate.getDate() !== date.getDate() ||
+      currentDate.getMonth() !== date.getMonth() ||
+      currentDate.getFullYear() !== date.getFullYear()
     ) {
       return true;
     } else {
@@ -53,7 +53,7 @@ function getEmailState(user) {
 
 // get users' time state as concerning the amount of time passed since the last email
 function getTimeState(user) {
-  const currentTime = new Date();
+  const currentTime = Date.now();
   if (user.prevTimestamp) {
     const diffInMillisec = Math.abs(currentTime - user.prevTimestamp);
     const minuteDifference = Math.floor(diffInMillisec / (1000 * 60));

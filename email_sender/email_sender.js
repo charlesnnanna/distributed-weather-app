@@ -7,9 +7,7 @@ async function sendEmailToUser(user, isRaining) {
     const emailState = getEmailState(timeState.user);
     if (timeState.timeExceeded && isRaining && emailState.hasNotExceeded) {
       user.numberOfReceivedEmails += 1;
-      user.prevTimestamp = new Date();
-      // customers[user.index].prevTimestamp = new Date();
-      // customers[user.index].numberOfReceivedEmails++;
+      user.prevTimestamp = Date.now();
       console.log(
         `Sending email to ${user.name} (${user.email}) - It's raining`,
         user,
